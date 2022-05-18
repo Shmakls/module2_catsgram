@@ -3,11 +3,14 @@ package ru.yandex.practicum.catsgram.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.yandex.practicum.catsgram.exceptions.EmailNotExistException;
 import ru.yandex.practicum.catsgram.exceptions.InvalidEmailException;
 import ru.yandex.practicum.catsgram.exceptions.UserAlreadyExistException;
+import ru.yandex.practicum.catsgram.exceptions.UserNotFoundException;
 import ru.yandex.practicum.catsgram.model.User;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -54,7 +57,7 @@ public class UserService {
 
     }
 
-    public User findUserByEmail(String email) {
+    public User checkUserBeforePost(String email) {
 
         for (User user : users) {
             if (user.getEmail().equals(email)) {
@@ -63,6 +66,24 @@ public class UserService {
         }
 
         return null;
+
+    }
+
+    public User findUserByEmail(String email) {
+
+        if (email == null) {
+            throw new EmailNotExistException("Email отсутствует.");
+        }
+
+        Optional<User> user = users.stream()
+                                .filter(x -> x.getEmail().equals(email))
+                                .findFirst();
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("Пользователь с email " + email + " не найден.");
+        }
+
+        return user.get();
 
     }
 
