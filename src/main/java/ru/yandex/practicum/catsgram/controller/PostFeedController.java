@@ -26,17 +26,14 @@ public class PostFeedController {
 
     @PostMapping
     List<Post> getFriendsFeed(@RequestBody FeedParams feedParams) {
-
         if (!SORTS.contains(feedParams.getSort())) {
-            throw new IncorrectParameterException("Некорректный параметр сортировки", feedParams.getSort());
+            throw new IncorrectParameterException("sort");
         }
-
-        if (feedParams.getFriendsEmails().isEmpty()) {
-            throw new IncorrectParameterException("Список друзей пустой.", feedParams.getFriendsEmails().toString());
-        }
-
         if (feedParams.getSize() == null || feedParams.getSize() <= 0) {
-            throw new IncorrectParameterException("Количество постов не может быть меньше нуля", feedParams.getSize().toString());
+            throw new IncorrectParameterException("size");
+        }
+        if (feedParams.getFriendsEmails().isEmpty()) {
+            throw new IncorrectParameterException("friendsEmails");
         }
 
         List<Post> result = new ArrayList<>();

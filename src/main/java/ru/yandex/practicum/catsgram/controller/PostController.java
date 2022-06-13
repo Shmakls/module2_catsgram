@@ -30,17 +30,14 @@ public class PostController {
             @RequestParam(defaultValue = DESCENDING_ORDER, required = false) String sort
     ) {
         if (!SORTS.contains(sort)) {
-            throw new IncorrectParameterException("Некорректный параметр сортировки", sort);
+            throw new IncorrectParameterException("sort");
         }
-
         if (page < 0) {
-            throw new IncorrectParameterException("Номер страницы не может быть отрицательный", page.toString());
+            throw new IncorrectParameterException("page");
         }
-
         if (size <= 0) {
-            throw new IncorrectParameterException("Количество постов не может быть меньше нуля", size.toString());
+            throw new IncorrectParameterException("size");
         }
-
         Integer from = page * size;
         return postService.findAll(size, from, sort);
     }

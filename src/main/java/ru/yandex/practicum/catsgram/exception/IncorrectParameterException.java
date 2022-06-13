@@ -1,11 +1,9 @@
 package ru.yandex.practicum.catsgram.exception;
 
 public class IncorrectParameterException extends RuntimeException {
+    private final String parameter;
 
-    private String parameter;
-
-    public IncorrectParameterException(String message, String parameter) {
-        super(message);
+    public IncorrectParameterException(String parameter) {
         this.parameter = parameter;
     }
 
